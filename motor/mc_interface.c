@@ -1963,6 +1963,18 @@ void mc_interface_mc_timer_isr(bool is_second_motor) {
 		if (fabsf(abs_current) > conf_now->l_abs_current_max) {
 			mc_interface_fault_stop(FAULT_CODE_ABS_OVER_CURRENT, is_second_motor, true);
 		}
+		//CL: add abs current limit for all current measurements
+		if (fabsf((GET_CURRENT1() - conf_now->foc_offsets_current[0]) * FAC_CURRENT1) > conf_now->l_abs_current_max) {
+			mc_interface_fault_stop(FAULT_CODE_ABS_OVER_CURRENT, is_second_motor, true);
+		}
+		if (fabsf((GET_CURRENT2() - conf_now->foc_offsets_current[1]) * FAC_CURRENT2) > conf_now->l_abs_current_max) {
+			mc_interface_fault_stop(FAULT_CODE_ABS_OVER_CURRENT, is_second_motor, true);
+		}
+#ifdef HW_HAS_3_SHUNTS
+		if (fabsf((GET_CURRENT3() - conf_now->foc_offsets_current[2]) * FAC_CURRENT3) > conf_now->l_abs_current_max) {
+			mc_interface_fault_stop(FAULT_CODE_ABS_OVER_CURRENT, is_second_motor, true);
+		}
+#endif
 	}
 
 	// DRV fault code
