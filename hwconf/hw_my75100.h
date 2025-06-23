@@ -56,9 +56,10 @@
 //#define PHASE_FILTER_OFF()	palClearPad(PHASE_FILTER_GPIO, PHASE_FILTER_PIN)
 
 // Suggested defaults
-#ifndef MCCONF_FOC_PHASE_FILTER_ENABLE
+#undef MCCONF_FOC_PHASE_FILTER_ENABLE
+//#ifndef MCCONF_FOC_PHASE_FILTER_ENABLE
 #define MCCONF_FOC_PHASE_FILTER_ENABLE  false // phase voltage filters
-#endif
+//#endif
 
 
 //disabled as current filtering can't be done with low side measurement 
@@ -98,7 +99,6 @@
 
 
 #define HW_ADC_INJ_CHANNELS		3
-//#define HW_ADC_NBR_CONV			4 //CL: check impact
 #define HW_ADC_NBR_CONV			4
 #define HW_ADC_CHANNELS			(HW_ADC_NBR_CONV * 3)
 
@@ -179,6 +179,7 @@
 
 // Double samples in beginning and end for positive current measurement.
 // Useful when the shunt sense traces have noise that causes offset.
+// just used in BLDC mode
 #ifndef CURR1_DOUBLE_SAMPLE
 #define CURR1_DOUBLE_SAMPLE		0
 #endif
@@ -286,7 +287,7 @@
 #define READ_HALL3()			palReadPad(HW_HALL_ENC_GPIO3, HW_HALL_ENC_PIN3)
 
 // Override dead time. See the stm32f4 reference manual for calculating this value.
-#define HW_DEAD_TIME_NSEC		660.0
+#define HW_DEAD_TIME_NSEC		        660.0
 
 // Default setting overrides
 #ifndef MCCONF_L_MIN_VOLTAGE
@@ -299,21 +300,21 @@
 #define MCCONF_DEFAULT_MOTOR_TYPE		MOTOR_TYPE_FOC
 #endif
 #ifndef MCCONF_FOC_F_ZV
-#define MCCONF_FOC_F_ZV					30000.0
+#define MCCONF_FOC_F_ZV					32000.0 //switching frequency in Hz
 #endif
 // FOC control loop frequency divider.
 //#define FOC_CONTROL_LOOP_FREQ_DIVIDER	1 (ADC ISR calls)
 #ifndef MCCONF_L_MAX_ABS_CURRENT
-#define MCCONF_L_MAX_ABS_CURRENT		50.0	// The maximum absolute current above which a fault is generated
+#define MCCONF_L_MAX_ABS_CURRENT		150.0	// The maximum absolute current above which a fault is generated
 #endif
 #ifndef MCCONF_FOC_SAMPLE_V0_V7
 #define MCCONF_FOC_SAMPLE_V0_V7			false	// unit has 3 battery shunts so this needs to be off - Run control loop in both v0 and v7 (requires phase shunts)
 #endif
 #ifndef MCCONF_L_IN_CURRENT_MAX
-#define MCCONF_L_IN_CURRENT_MAX			10.0	// Input current limit in Amperes (Upper)
+#define MCCONF_L_IN_CURRENT_MAX			60.0	// Input current limit in Amperes (Upper)
 #endif
 #ifndef MCCONF_L_IN_CURRENT_MIN
-#define MCCONF_L_IN_CURRENT_MIN			-10.0	// Input current limit in Amperes (Lower)
+#define MCCONF_L_IN_CURRENT_MIN			-60.0	// Input current limit in Amperes (Lower)
 #endif
 #ifndef MCCONF_L_RPM_MAX
 #define MCCONF_L_RPM_MAX				150000.0	// The motor speed limit (Upper)
@@ -330,12 +331,12 @@
 
 // Setting limits
 #define HW_LIM_CURRENT			-80.0, 80.0 // phase amps
-#define HW_LIM_CURRENT_IN		-40.0, 40.0 // battery amps
-#define HW_LIM_CURRENT_ABS		0.0, 100 // abs phase amps
-#define HW_LIM_VIN				6.0, 110.0
-#define HW_LIM_ERPM				-200e3, 200e3
+#define HW_LIM_CURRENT_IN		-75.0, 75.0 // battery amps
+#define HW_LIM_CURRENT_ABS		0.0, 175 // abs phase amps
+#define HW_LIM_VIN				6.0, 100.0
+#define HW_LIM_ERPM				-150e3, 150e3
 #define HW_LIM_DUTY_MIN			0.0, 0.1
-#define HW_LIM_DUTY_MAX			0.0, 0.98
+#define HW_LIM_DUTY_MAX			0.0, 0.99
 #define HW_LIM_TEMP_FET			-40.0, 90.0
 
 #endif /* HW_MY75100 */
