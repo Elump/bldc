@@ -13,6 +13,12 @@
     (- val (* (/ 5.0 rate) (- val sample)))
 )
 
+; Config
+;(conf-set 'l-current-max  25)
+;(conf-set 'l-current-min  -2)
+;(conf-set 'foc-sensor-mode 4) ;FOC_SENSOR_MODE_HFI_START
+;(conf-set 'foc-sensor-mode 8) ;FOC_SENSOR_MODE_HFI_V5
+
 (loopwhile t {
        
         ;ADC
